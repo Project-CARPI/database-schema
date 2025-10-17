@@ -26,6 +26,8 @@ course = Course(
 )
 ```
 
+For more examples, see the [examples/usage_example.py](examples/usage_example.py) file.
+
 ## Available Models
 
 - `Course`: Course information
