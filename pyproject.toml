@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "carpi-data-model"
+version = "1.0"
+dependencies = ["SQLAlchemy>=2.0.44", "sqlmodel>=0.0.27"]
+requires-python = ">=3.8"
+authors = [{ name = "Raymond Chen" }, { name = "Jack Zgombic" }]
+maintainers = [{ name = "Raymond Chen" }]
+description = "The MySQL database schema used in Project CARPI."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["egg", "bacon", "sausage", "tomatoes", "Lobster Thermidor"]
+classifiers = ["Programming Language :: Python :: 3"]
+
+[project.urls]
+Repository = "https://github.com/Project-CARPI/database-schema"
