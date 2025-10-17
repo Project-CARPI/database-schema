@@ -34,3 +34,19 @@ course = Course(
 - `Course_Relationship`: Course relationships (Coreq, Cross-listed)
 - `Course_Restriction`: Course restrictions
 - `Course_Seats`: Course seat availability
+
+## Development
+
+### Running Tests
+
+```bash
+pip install -e ".[dev]"
+pytest tests/
+```
+
+### Building the Package
+
+```bash
+pip install build
+python -m build
+```
