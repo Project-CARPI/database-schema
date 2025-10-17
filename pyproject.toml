@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "carpi-db-models"
+version = "0.1.0"
+description = "CARPI MySQL database schemas as Pydantic models"
+readme = "README.md"
+authors = [
+    {name = "Project CARPI"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "sqlmodel>=0.0.22",
+    "sqlalchemy>=2.0.0",
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Project-CARPI/database-schema"
+"Repository" = "https://github.com/Project-CARPI/database-schema"
