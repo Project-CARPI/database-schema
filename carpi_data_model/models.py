@@ -7,8 +7,10 @@ _SEMESTER_ENUM = ["Fall", "Spring", "Summer"]
 
 
 class Course_Attribute(SQLModel, table=True):
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
+    code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
     attr: str = Field(
         primary_key=True, foreign_key="attribute_description.attr", sa_type=VARCHAR(4)
     )
@@ -20,16 +22,24 @@ class Attribute_Description(SQLModel, table=True):
 
 
 class Course_Relationship(SQLModel, table=True):
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
+    code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
     relationship: str = Field(primary_key=True, sa_type=ENUM(*_RELATIONSHIP_ENUM))
-    rel_dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    rel_code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    rel_subj: str = Field(
+        primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4)
+    )
+    rel_code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
 
 
 class Course_Restriction(SQLModel, table=True):
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
+    code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
     category: str = Field(
         primary_key=True,
         foreign_key="restriction_description.category",
@@ -55,14 +65,18 @@ class Restriction_Description(SQLModel, table=True):
 class Course_Seats(SQLModel, table=True):
     sem_year: int = Field(primary_key=True, sa_type=SMALLINT)
     semester: str = Field(primary_key=True, sa_type=ENUM(*_SEMESTER_ENUM))
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
+    code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
     seats_filled: int = Field(sa_type=TINYINT)
     seats_total: int = Field(sa_type=TINYINT)
 
 
 class Course(SQLModel, table=True):
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(
+        primary_key=True, foreign_key="subject_description.subj", sa_type=VARCHAR(4)
+    )
     code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
     title: str = Field(sa_type=VARCHAR(255))
     desc_text: str = Field(sa_type=TEXT)
@@ -70,9 +84,16 @@ class Course(SQLModel, table=True):
     credit_max: int = Field(sa_type=TINYINT)
 
 
+class Subject_Description(SQLModel, table=True):
+    subj: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    description: str = Field(sa_type=VARCHAR(255))
+
+
 class Professor(SQLModel, table=True):
     sem_year: int = Field(primary_key=True, sa_type=SMALLINT)
     semester: str = Field(primary_key=True, sa_type=ENUM(*_SEMESTER_ENUM))
-    dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
+    code_num: str = Field(
+        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    )
     prof_name: str = Field(primary_key=True, sa_type=VARCHAR(255))
