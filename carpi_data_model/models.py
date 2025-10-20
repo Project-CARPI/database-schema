@@ -2,8 +2,7 @@ from sqlalchemy.dialects.mysql import ENUM, SMALLINT, TEXT, TINYINT, VARCHAR
 from sqlmodel import Field, SQLModel
 
 _RELATIONSHIP_ENUM = ["Coreq", "Cross"]
-_CATEGORY_ENUM = ["Major", "Level", "Classification"]
-_RESTRICTION_ENUM = ["Must be", "May not be"]
+_RESTRICTION_RULE_ENUM = ["Must be", "Cannot be"]
 _SEMESTER_ENUM = ["Fall", "Spring", "Summer"]
 
 
@@ -31,9 +30,26 @@ class Course_Relationship(SQLModel, table=True):
 class Course_Restriction(SQLModel, table=True):
     dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
     code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    category: str = Field(primary_key=True, sa_type=ENUM(*_CATEGORY_ENUM))
-    restr_rule: str = Field(primary_key=True, sa_type=ENUM(*_RESTRICTION_ENUM))
-    restriction: str = Field(primary_key=True, sa_type=VARCHAR(255))
+    category: str = Field(
+        primary_key=True,
+        foreign_key="restriction_description.category",
+        sa_type=VARCHAR(50),
+    )
+    restr_rule: str = Field(
+        primary_key=True,
+        sa_type=ENUM(*_RESTRICTION_RULE_ENUM),
+    )
+    restriction: str = Field(
+        primary_key=True,
+        foreign_key="restriction_description.restriction",
+        sa_type=VARCHAR(50),
+    )
+
+
+class Restriction_Description(SQLModel, table=True):
+    category: str = Field(primary_key=True, sa_type=VARCHAR(50))
+    restriction: str = Field(primary_key=True, sa_type=VARCHAR(20))
+    description: str = Field(sa_type=VARCHAR(255))
 
 
 class Course_Seats(SQLModel, table=True):
