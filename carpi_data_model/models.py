@@ -1,17 +1,6 @@
 from sqlalchemy.dialects.mysql import ENUM, SMALLINT, TEXT, TINYINT, VARCHAR
 from sqlmodel import Field, SQLModel
 
-_ATTR_ENUM = [
-    "Communication Intensive",
-    "Culminating Exp/Capstone",
-    "Data Intensive I",
-    "Data Intensive II",
-    "Writing Intensive",
-    "HASS Inquiry",
-    "Introductory Level Course",
-    "PDII Option for Engr Majors",
-]
-
 _RELATIONSHIP_ENUM = ["Coreq", "Cross"]
 _CATEGORY_ENUM = ["Major", "Level", "Classification"]
 _RESTRICTION_ENUM = ["Must be", "May not be"]
@@ -21,7 +10,14 @@ _SEMESTER_ENUM = ["Fall", "Spring", "Summer"]
 class Course_Attribute(SQLModel, table=True):
     dept: str = Field(primary_key=True, sa_type=VARCHAR(4))
     code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    attr: str = Field(primary_key=True, sa_type=ENUM(*_ATTR_ENUM))
+    attr: str = Field(
+        primary_key=True, foreign_key="attribute_description.attr", sa_type=VARCHAR(4)
+    )
+
+
+class Attribute_Description(SQLModel, table=True):
+    attr: str = Field(primary_key=True, sa_type=VARCHAR(4))
+    description: str = Field(sa_type=VARCHAR(255))
 
 
 class Course_Relationship(SQLModel, table=True):
