@@ -1,99 +1,120 @@
+from sqlalchemy import Column, ForeignKey, ForeignKeyConstraint
 from sqlalchemy.dialects.mysql import ENUM, SMALLINT, TEXT, TINYINT, VARCHAR
-from sqlmodel import Field, SQLModel
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
 
 _RELATIONSHIP_ENUM = ["Coreq", "Cross"]
 _RESTRICTION_RULE_ENUM = ["Must be", "Cannot be"]
 _SEMESTER_ENUM = ["Fall", "Spring", "Summer"]
 
 
-class Course_Attribute(SQLModel, table=True):
-    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
-    code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
-    )
-    attr: str = Field(
-        primary_key=True, foreign_key="attribute_description.attr", sa_type=VARCHAR(4)
-    )
+class Subject_Description(Base):
+    __tablename__ = "subject_description"
+
+    subj = Column(VARCHAR(4), primary_key=True)
+    description = Column(VARCHAR(255), nullable=False)
 
 
-class Attribute_Description(SQLModel, table=True):
-    attr: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    description: str = Field(sa_type=VARCHAR(255))
+class Attribute_Description(Base):
+    __tablename__ = "attribute_description"
+
+    attr = Column(VARCHAR(4), primary_key=True)
+    description = Column(VARCHAR(255), nullable=False)
 
 
-class Course_Relationship(SQLModel, table=True):
-    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
-    code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
-    )
-    relationship: str = Field(primary_key=True, sa_type=ENUM(*_RELATIONSHIP_ENUM))
-    rel_subj: str = Field(
-        primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4)
-    )
-    rel_code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
-    )
+class Restriction_Description(Base):
+    __tablename__ = "restriction_description"
+
+    category = Column(VARCHAR(50), primary_key=True)
+    restriction = Column(VARCHAR(20), primary_key=True)
+    description = Column(VARCHAR(255), nullable=False)
 
 
-class Course_Restriction(SQLModel, table=True):
-    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
-    code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+class Course(Base):
+    __tablename__ = "course"
+
+    subj = Column(VARCHAR(4), ForeignKey("subject_description.subj"), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    title = Column(VARCHAR(255), nullable=False)
+    desc_text = Column(TEXT, nullable=False)
+    credit_min = Column(TINYINT, nullable=False)
+    credit_max = Column(TINYINT, nullable=False)
+
+
+class Course_Attribute(Base):
+    __tablename__ = "course_attribute"
+
+    subj = Column(VARCHAR(4), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    attr = Column(
+        VARCHAR(4), ForeignKey("attribute_description.attr"), primary_key=True
     )
-    category: str = Field(
-        primary_key=True,
-        foreign_key="restriction_description.category",
-        sa_type=VARCHAR(50),
-    )
-    restr_rule: str = Field(
-        primary_key=True,
-        sa_type=ENUM(*_RESTRICTION_RULE_ENUM),
-    )
-    restriction: str = Field(
-        primary_key=True,
-        foreign_key="restriction_description.restriction",
-        sa_type=VARCHAR(50),
+
+    __table_args__ = (
+        ForeignKeyConstraint(["subj", "code_num"], ["course.subj", "course.code_num"]),
     )
 
 
-class Restriction_Description(SQLModel, table=True):
-    category: str = Field(primary_key=True, sa_type=VARCHAR(50))
-    restriction: str = Field(primary_key=True, sa_type=VARCHAR(20))
-    description: str = Field(sa_type=VARCHAR(255))
+class Course_Relationship(Base):
+    __tablename__ = "course_relationship"
 
+    subj = Column(VARCHAR(4), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    relationship = Column(ENUM(*_RELATIONSHIP_ENUM), primary_key=True)
+    rel_subj = Column(VARCHAR(4), primary_key=True)
+    rel_code_num = Column(VARCHAR(4), primary_key=True)
 
-class Course_Seats(SQLModel, table=True):
-    sem_year: int = Field(primary_key=True, sa_type=SMALLINT)
-    semester: str = Field(primary_key=True, sa_type=ENUM(*_SEMESTER_ENUM))
-    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
-    code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    __table_args__ = (
+        ForeignKeyConstraint(["subj", "code_num"], ["course.subj", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["rel_subj", "rel_code_num"], ["course.subj", "course.code_num"]
+        ),
     )
-    seats_filled: int = Field(sa_type=TINYINT)
-    seats_total: int = Field(sa_type=TINYINT)
 
 
-class Course(SQLModel, table=True):
-    subj: str = Field(
-        primary_key=True, foreign_key="subject_description.subj", sa_type=VARCHAR(4)
+class Course_Restriction(Base):
+    __tablename__ = "course_restriction"
+
+    subj = Column(VARCHAR(4), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    category = Column(VARCHAR(50), primary_key=True)
+    restr_rule = Column(ENUM(*_RESTRICTION_RULE_ENUM), primary_key=True)
+    restriction = Column(VARCHAR(50), primary_key=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(["subj", "code_num"], ["course.subj", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["category", "restriction"],
+            ["restriction_description.category", "restriction_description.restriction"],
+        ),
     )
-    code_num: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    title: str = Field(sa_type=VARCHAR(255))
-    desc_text: str = Field(sa_type=TEXT)
-    credit_min: int = Field(sa_type=TINYINT)
-    credit_max: int = Field(sa_type=TINYINT)
 
 
-class Subject_Description(SQLModel, table=True):
-    subj: str = Field(primary_key=True, sa_type=VARCHAR(4))
-    description: str = Field(sa_type=VARCHAR(255))
+class Course_Seats(Base):
+    __tablename__ = "course_seats"
 
+    sem_year = Column(SMALLINT, primary_key=True)
+    semester = Column(ENUM(*_SEMESTER_ENUM), primary_key=True)
+    subj = Column(VARCHAR(4), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    seats_filled = Column(TINYINT, nullable=False)
+    seats_total = Column(TINYINT, nullable=False)
 
-class Professor(SQLModel, table=True):
-    sem_year: int = Field(primary_key=True, sa_type=SMALLINT)
-    semester: str = Field(primary_key=True, sa_type=ENUM(*_SEMESTER_ENUM))
-    subj: str = Field(primary_key=True, foreign_key="course.subj", sa_type=VARCHAR(4))
-    code_num: str = Field(
-        primary_key=True, foreign_key="course.code_num", sa_type=VARCHAR(4)
+    __table_args__ = (
+        ForeignKeyConstraint(["subj", "code_num"], ["course.subj", "course.code_num"]),
     )
-    prof_name: str = Field(primary_key=True, sa_type=VARCHAR(255))
+
+
+class Professor(Base):
+    __tablename__ = "professor"
+
+    sem_year = Column(SMALLINT, primary_key=True)
+    semester = Column(ENUM(*_SEMESTER_ENUM), primary_key=True)
+    subj = Column(VARCHAR(4), primary_key=True)
+    code_num = Column(VARCHAR(4), primary_key=True)
+    prof_name = Column(VARCHAR(255), primary_key=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(["subj", "code_num"], ["course.subj", "course.code_num"]),
+    )
