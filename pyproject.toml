@@ -1,11 +1,11 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "carpi-data-model"
 version = "1.0"
-dependencies = ["SQLAlchemy>=2.0.44""]
+dependencies = ["SQLAlchemy>=2.0.0""]
 requires-python = ">=3.7"
 authors = [{ name = "Raymond Chen" }, { name = "Jack Zgombic" }]
 maintainers = [{ name = "Raymond Chen" }]
@@ -14,7 +14,11 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 keywords = ["egg", "bacon", "sausage", "tomatoes", "Lobster Thermidor"]
-classifiers = ["Programming Language :: Python :: 3"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    License :: OSI Approved :: MIT License,
+    Operating System :: OS Independent,
+]
 
 [project.urls]
-Repository = "https://github.com/Project-CARPI/database-schema"
+"Repository" = "https://github.com/Project-CARPI/database-schema"
