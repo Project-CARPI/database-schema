@@ -4,19 +4,19 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
-_RELATIONSHIP_ENUM = ["Coreq", "Cross"]
-_RESTRICTION_RULE_ENUM = ["Must be", "Cannot be"]
+_RELATIONSHIP_ENUM = ["COREQ", "CROSS"]
+_RESTRICTION_RULE_ENUM = ["MUST_BE", "CANNOT_BE"]
 _RESTRICTION_TYPE_ENUM = [
-    "major",
-    "minor",
-    "level",
-    "classification",
-    "degree",
-    "department",
-    "campus",
-    "college",
+    "MAJOR",
+    "MINOR",
+    "LEVEL",
+    "CLASSIFICATION",
+    "DEGREE",
+    "DEPARTMENT",
+    "CAMPUS",
+    "COLLEGE",
 ]
-_SEMESTER_ENUM = ["Fall", "Spring", "Summer"]
+_SEMESTER_ENUM = ["FALL", "SPRING", "SUMMER"]
 
 
 class Subject(Base):
