@@ -65,12 +65,12 @@ class Course_Attribute(Base):
 
     subj_code = Column(VARCHAR(4), primary_key=True)
     code_num = Column(VARCHAR(4), primary_key=True)
-    attr_code = Column(
-        VARCHAR(4), ForeignKey("attribute.attr_code"), primary_key=True
-    )
+    attr_code = Column(VARCHAR(4), ForeignKey("attribute.attr_code"), primary_key=True)
 
     __table_args__ = (
-        ForeignKeyConstraint(["subj_code", "code_num"], ["course.subj_code", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["subj_code", "code_num"], ["course.subj_code", "course.code_num"]
+        ),
     )
 
 
@@ -79,12 +79,14 @@ class Course_Relationship(Base):
 
     subj_code = Column(VARCHAR(4), primary_key=True)
     code_num = Column(VARCHAR(4), primary_key=True)
-    relationship = Column(ENUM(*_RELATIONSHIP_ENUM))
+    relationship = Column(ENUM(*_RELATIONSHIP_ENUM), nullable=False)
     rel_subj = Column(VARCHAR(4), primary_key=True)
     rel_code_num = Column(VARCHAR(4), primary_key=True)
 
     __table_args__ = (
-        ForeignKeyConstraint(["subj_code", "code_num"], ["course.subj_code", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["subj_code", "code_num"], ["course.subj_code", "course.code_num"]
+        ),
         ForeignKeyConstraint(
             ["rel_subj", "rel_code_num"], ["course.subj_code", "course.code_num"]
         ),
@@ -96,12 +98,14 @@ class Course_Restriction(Base):
 
     subj_code = Column(VARCHAR(4), primary_key=True)
     code_num = Column(VARCHAR(4), primary_key=True)
-    restr_rule = Column(ENUM(*_RESTRICTION_RULE_ENUM))
+    restr_rule = Column(ENUM(*_RESTRICTION_RULE_ENUM), nullable=False)
     category = Column(VARCHAR(50), primary_key=True)
     restr_code = Column(VARCHAR(50), primary_key=True)
 
     __table_args__ = (
-        ForeignKeyConstraint(["subj_code", "code_num"], ["course.subj_code", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["subj_code", "code_num"], ["course.subj_code", "course.code_num"]
+        ),
         ForeignKeyConstraint(
             ["category", "restr_code"],
             ["restriction.category", "restriction.restr_code"],
@@ -120,7 +124,9 @@ class Course_Offering(Base):
     seats_total = Column(TINYINT, nullable=False)
 
     __table_args__ = (
-        ForeignKeyConstraint(["subj_code", "code_num"], ["course.subj_code", "course.code_num"]),
+        ForeignKeyConstraint(
+            ["subj_code", "code_num"], ["course.subj_code", "course.code_num"]
+        ),
     )
 
 
@@ -134,5 +140,13 @@ class Course_Faculty(Base):
     rcsid = Column(VARCHAR(15), ForeignKey("faculty.rcsid"), primary_key=True)
 
     __table_args__ = (
-        ForeignKeyConstraint(["sem_year", "semester", "subj_code", "code_num"], ["course_offering.sem_year", "course_offering.semester", "course_offering.subj_code", "course_offering.code_num"]),
+        ForeignKeyConstraint(
+            ["sem_year", "semester", "subj_code", "code_num"],
+            [
+                "course_offering.sem_year",
+                "course_offering.semester",
+                "course_offering.subj_code",
+                "course_offering.code_num",
+            ],
+        ),
     )
