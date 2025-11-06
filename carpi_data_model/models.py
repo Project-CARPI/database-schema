@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Enum, ForeignKey, ForeignKeyConstraint
 from sqlalchemy.dialects.mysql import SMALLINT, TEXT, TINYINT, VARCHAR
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import DeclarativeBase, declarative_base
 
-Base = declarative_base()
+Base: DeclarativeBase = declarative_base()
 
 _RELATIONSHIP_ENUM = ["COREQ", "CROSS"]
 _RESTRICTION_RULE_ENUM = ["MUST_BE", "CANNOT_BE"]
