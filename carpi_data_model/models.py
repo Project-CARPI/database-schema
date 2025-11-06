@@ -4,7 +4,7 @@ from sqlalchemy.orm import DeclarativeBase, declarative_base
 
 Base: DeclarativeBase = declarative_base()
 
-_RELATIONSHIP_ENUM = ["COREQ", "CROSS"]
+_RELATIONSHIP_TYPE_ENUM = ["COREQ", "CROSS"]
 _RESTRICTION_RULE_ENUM = ["MUST_BE", "CANNOT_BE"]
 _RESTRICTION_TYPE_ENUM = [
     "MAJOR",
@@ -18,7 +18,9 @@ _RESTRICTION_TYPE_ENUM = [
 ]
 _SEMESTER_ENUM = ["FALL", "SPRING", "SUMMER"]
 
-RELATIONSHIP_ENUM = Enum(*_RELATIONSHIP_ENUM, name="relationship", native_enum=True)
+RELATIONSHIP_TYPE_ENUM = Enum(
+    *_RELATIONSHIP_TYPE_ENUM, name="relationship_type", native_enum=True
+)
 RESTRICTION_RULE_ENUM = Enum(
     *_RESTRICTION_RULE_ENUM, name="restriction_rule", native_enum=True
 )
@@ -88,7 +90,7 @@ class Course_Relationship(Base):
 
     subj_code = Column(VARCHAR(4), primary_key=True)
     code_num = Column(VARCHAR(4), primary_key=True)
-    relationship = Column(RELATIONSHIP_ENUM, nullable=False)
+    relationship = Column(RELATIONSHIP_TYPE_ENUM, nullable=False)
     rel_subj = Column(VARCHAR(4), primary_key=True)
     rel_code_num = Column(VARCHAR(4), primary_key=True)
 
