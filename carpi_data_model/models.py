@@ -99,8 +99,8 @@ class Course_Restriction(Base):
     subj_code = Column(VARCHAR(4), primary_key=True)
     code_num = Column(VARCHAR(4), primary_key=True)
     restr_rule = Column(ENUM(*_RESTRICTION_RULE_ENUM), nullable=False)
-    category = Column(VARCHAR(50), primary_key=True)
-    restr_code = Column(VARCHAR(50), primary_key=True)
+    category = Column(ENUM(*_RESTRICTION_TYPE_ENUM), primary_key=True)
+    restr_code = Column(VARCHAR(20), primary_key=True)
 
     __table_args__ = (
         ForeignKeyConstraint(
