@@ -5,7 +5,9 @@ from sqlalchemy import ForeignKey, ForeignKeyConstraint
 from sqlalchemy.dialects.mysql import SMALLINT, TEXT, TINYINT, VARCHAR
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-Base = DeclarativeBase()
+
+class Base(DeclarativeBase):
+    pass
 
 
 class RelationshipTypeEnum(str, PyEnum):
