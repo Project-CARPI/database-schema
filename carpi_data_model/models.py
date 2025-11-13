@@ -1,33 +1,51 @@
-from sqlalchemy import Column, Enum, ForeignKey, ForeignKeyConstraint
+from enum import Enum as PyEnum
+
+from sqlalchemy import Column
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import ForeignKey, ForeignKeyConstraint
 from sqlalchemy.dialects.mysql import SMALLINT, TEXT, TINYINT, VARCHAR
 from sqlalchemy.orm import DeclarativeBase, declarative_base
 
 Base: DeclarativeBase = declarative_base()
 
-_RELATIONSHIP_TYPE_ENUM = ["COREQ", "CROSS"]
-_RESTRICTION_RULE_ENUM = ["MUST_BE", "CANNOT_BE"]
-_RESTRICTION_TYPE_ENUM = [
-    "MAJOR",
-    "MINOR",
-    "LEVEL",
-    "CLASSIFICATION",
-    "DEGREE",
-    "DEPARTMENT",
-    "CAMPUS",
-    "COLLEGE",
-]
-_SEMESTER_ENUM = ["FALL", "SPRING", "SUMMER"]
 
-RELATIONSHIP_TYPE_ENUM = Enum(
-    *_RELATIONSHIP_TYPE_ENUM, name="relationship_type", native_enum=True
+class RelationshipTypeEnum(str, PyEnum):
+    COREQUISITE = "COREQ"
+    CROSSLIST = "CROSS"
+
+
+class RestrictionRuleEnum(str, PyEnum):
+    MUST_BE = "MUST_BE"
+    CANNOT_BE = "CANNOT_BE"
+
+
+class RestrictionTypeEnum(str, PyEnum):
+    MAJOR = "MAJOR"
+    MINOR = "MINOR"
+    LEVEL = "LEVEL"
+    CLASSIFICATION = "CLASSIFICATION"
+    DEGREE = "DEGREE"
+    DEPARTMENT = "DEPARTMENT"
+    CAMPUS = "CAMPUS"
+    COLLEGE = "COLLEGE"
+
+
+class SemesterEnum(str, PyEnum):
+    FALL = "FALL"
+    SPRING = "SPRING"
+    SUMMER = "SUMMER"
+
+
+RELATIONSHIP_TYPE_ENUM = SQLEnum(
+    RelationshipTypeEnum, name="relationship_type", native_enum=True
 )
-RESTRICTION_RULE_ENUM = Enum(
-    *_RESTRICTION_RULE_ENUM, name="restriction_rule", native_enum=True
+RESTRICTION_RULE_ENUM = SQLEnum(
+    RestrictionRuleEnum, name="restriction_rule", native_enum=True
 )
-RESTRICTION_TYPE_ENUM = Enum(
-    *_RESTRICTION_TYPE_ENUM, name="restriction_type", native_enum=True
+RESTRICTION_TYPE_ENUM = SQLEnum(
+    RestrictionTypeEnum, name="restriction_type", native_enum=True
 )
-SEMESTER_ENUM = Enum(*_SEMESTER_ENUM, name="semester", native_enum=True)
+SEMESTER_ENUM = SQLEnum(SemesterEnum, name="semester", native_enum=True)
 
 
 class Subject(Base):
