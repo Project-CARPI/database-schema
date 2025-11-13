@@ -162,8 +162,8 @@ class Course_Offering(Base):
     semester: Mapped[SemesterEnum] = mapped_column(SEMESTER_ENUM, primary_key=True)
     subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
     code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
-    seats_filled: Mapped[int] = mapped_column(TINYINT, nullable=False)
-    seats_total: Mapped[int] = mapped_column(TINYINT, nullable=False)
+    seats_filled: Mapped[int] = mapped_column(SMALLINT, nullable=False)
+    seats_total: Mapped[int] = mapped_column(SMALLINT, nullable=False)
 
     __table_args__ = (
         ForeignKeyConstraint(
