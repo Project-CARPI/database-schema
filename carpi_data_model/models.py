@@ -37,6 +37,11 @@ class SemesterEnum(str, PyEnum):
     SUMMER = "SUMMER"
 
 
+class PrerequisiteNestingTypeEnum(str, PyEnum):
+    AND = "AND"
+    OR = "OR"
+
+
 RELATIONSHIP_TYPE_ENUM = SQLEnum(
     RelationshipTypeEnum, name="relationship_type", native_enum=True
 )
@@ -47,6 +52,11 @@ RESTRICTION_TYPE_ENUM = SQLEnum(
     RestrictionTypeEnum, name="restriction_type", native_enum=True
 )
 SEMESTER_ENUM = SQLEnum(SemesterEnum, name="semester", native_enum=True)
+PREREQUISITE_NESTING_TYPE_ENUM = SQLEnum(
+    PrerequisiteNestingTypeEnum,
+    name="prerequisite_nesting_type",
+    native_enum=True,
+)
 
 
 class Subject(Base):
@@ -192,5 +202,45 @@ class Course_Faculty(Base):
                 "course_offering.subj_code",
                 "course_offering.code_num",
             ],
+        ),
+    )
+
+
+class Prerequisite_Nesting(Base):
+    __tablename__ = "prerequisite_nesting"
+
+    og_subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
+    og_code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
+    id: Mapped[int] = mapped_column(SMALLINT, primary_key=True)
+    relationship: Mapped[PrerequisiteNestingTypeEnum] = mapped_column(
+        PREREQUISITE_NESTING_TYPE_ENUM,
+        nullable=True,
+    )
+    parent_id: Mapped[int] = mapped_column(SMALLINT, nullable=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["og_subj_code", "og_code_num"],
+            ["course.subj_code", "course.code_num"],
+        ),
+    )
+
+
+class Prerequisite_Course(Base):
+    __tablename__ = "prerequisite_course"
+
+    og_subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
+    og_code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
+    parent_id: Mapped[int] = mapped_column(SMALLINT, primary_key=True)
+    new_subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
+    new_code_num: Mapped[int] = mapped_column(SMALLINT, primary_key=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["og_subj_code", "og_code_num"], ["course.subj_code", "course.code_num"]
+        ),
+        ForeignKeyConstraint(["parent_id"], ["prerequisite_nesting.id"]),
+        ForeignKeyConstraint(
+            ["new_subj_code, new_code_num"], ["course.subj_code", "course.code_num"]
         ),
     )
