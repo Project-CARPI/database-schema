@@ -17,7 +17,6 @@ description = "The MySQL database schema used in Project CARPI."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-keywords = ["egg", "bacon", "sausage", "tomatoes", "Lobster Thermidor"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
