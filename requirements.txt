@@ -1,2 +1,8 @@
+-e git+https://github.com/Project-CARPI/database-schema.git#egg=carpi_data_model
+iniconfig==2.3.0
+packaging==26.0
+pluggy==1.6.0
+Pygments==2.20.0
+pytest==9.0.3
 SQLAlchemy==2.0.44
 typing_extensions==4.15.0
