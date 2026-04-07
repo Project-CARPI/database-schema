@@ -7,7 +7,8 @@ on:
     branches: ["**"]
 
 jobs:
-  Run Test Suite:
+  run_test_suite:
+    name: Run Test Suite
     runs-on: ubuntu-latest
 
     steps:

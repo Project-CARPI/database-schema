@@ -3,7 +3,19 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 from testcontainers.mysql import MySqlContainer
 
-from carpi_data_model.models import *
+from carpi_data_model.models import (
+    Attribute,
+    Base,
+    Course,
+    Course_Attribute,
+    Course_Faculty,
+    Course_Offering,
+    Course_Relationship,
+    Course_Restriction,
+    Faculty,
+    Restriction,
+    Subject,
+)
 
 
 @pytest.fixture(scope="session")
@@ -13,7 +25,11 @@ def engine():
     requires Docker to be running on your machine.
     """
     with MySqlContainer("mysql:8.0", dialect="mysqlconnector") as mysql:
-        yield create_engine(mysql.get_connection_url(), echo=False)
+        db_engine = create_engine(mysql.get_connection_url(), echo=False)
+        try:
+            yield db_engine
+        finally:
+            db_engine.dispose()
 
 
 @pytest.fixture(autouse=True)
