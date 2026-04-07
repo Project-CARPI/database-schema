@@ -47,8 +47,8 @@ def test_create_tables(engine):
 
 def test_insert_and_query(engine):
     """
-    Test basic database operations (insert and query) on a table
-    to ensure the ORM definitions functionally work.
+    Test basic database operations (insert and query) on a table to ensure the
+    ORM definitions functionally work.
     """
     with Session(engine) as session:
         subj = Subject(subj_code="CSCI", title="Computer Science")
