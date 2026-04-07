@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 from testcontainers.mysql import MySqlContainer
 
@@ -31,18 +31,21 @@ def test_create_tables(engine):
     """
     Test that the SQLAlchemy schema can be translated into DDL and executed
     in a Native MySQL database without throwing any mapping or constraint
-    errors.
+    errors. Ensures the tables actually exist in the database catalog.
     """
-    assert Subject.__tablename__ in Base.metadata.tables
-    assert Attribute.__tablename__ in Base.metadata.tables
-    assert Restriction.__tablename__ in Base.metadata.tables
-    assert Faculty.__tablename__ in Base.metadata.tables
-    assert Course.__tablename__ in Base.metadata.tables
-    assert Course_Attribute.__tablename__ in Base.metadata.tables
-    assert Course_Relationship.__tablename__ in Base.metadata.tables
-    assert Course_Restriction.__tablename__ in Base.metadata.tables
-    assert Course_Offering.__tablename__ in Base.metadata.tables
-    assert Course_Faculty.__tablename__ in Base.metadata.tables
+    inspector = inspect(engine)
+    existing_tables = inspector.get_table_names()
+
+    assert Subject.__tablename__ in existing_tables
+    assert Attribute.__tablename__ in existing_tables
+    assert Restriction.__tablename__ in existing_tables
+    assert Faculty.__tablename__ in existing_tables
+    assert Course.__tablename__ in existing_tables
+    assert Course_Attribute.__tablename__ in existing_tables
+    assert Course_Relationship.__tablename__ in existing_tables
+    assert Course_Restriction.__tablename__ in existing_tables
+    assert Course_Offering.__tablename__ in existing_tables
+    assert Course_Faculty.__tablename__ in existing_tables
 
 
 def test_insert_and_query(engine):
