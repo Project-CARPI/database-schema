@@ -3,7 +3,19 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from testcontainers.mysql import MySqlContainer
 
-from carpi_data_model.models import *
+from carpi_data_model.models import (
+    Attribute,
+    Base,
+    Course,
+    Course_Attribute,
+    Course_Faculty,
+    Course_Offering,
+    Course_Relationship,
+    Course_Restriction,
+    Faculty,
+    Restriction,
+    Subject,
+)
 
 
 @pytest.fixture(scope="session")
