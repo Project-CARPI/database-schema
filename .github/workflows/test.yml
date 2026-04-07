@@ -1,4 +1,4 @@
-name: Run Tests
+name: SQLAlchemy Model Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: ["**"]
 
 jobs:
-  test:
+  Run Test Suite:
     runs-on: ubuntu-latest
 
     steps:
