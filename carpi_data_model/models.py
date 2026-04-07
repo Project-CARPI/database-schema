@@ -245,9 +245,6 @@ class Prerequisite_Course(Base):
 
     __table_args__ = (
         ForeignKeyConstraint(
-            ["og_subj_code", "og_code_num"], ["course.subj_code", "course.code_num"]
-        ),
-        ForeignKeyConstraint(
             ["og_subj_code", "og_code_num", "parent_id"],
             [
                 "prerequisite_nesting.og_subj_code",
