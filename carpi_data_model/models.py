@@ -241,6 +241,6 @@ class Prerequisite_Course(Base):
         ),
         ForeignKeyConstraint(["parent_id"], ["prerequisite_nesting.id"]),
         ForeignKeyConstraint(
-            ["new_subj_code, new_code_num"], ["course.subj_code", "course.code_num"]
+            ["new_subj_code", "new_code_num"], ["course.subj_code", "course.code_num"]
         ),
     )
