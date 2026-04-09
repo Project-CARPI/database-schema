@@ -13,6 +13,8 @@ from carpi_data_model.models import (
     Course_Relationship,
     Course_Restriction,
     Faculty,
+    Prerequisite_Course,
+    Prerequisite_Nesting,
     Restriction,
     Subject,
 )
@@ -50,7 +52,7 @@ def test_create_tables(engine):
     errors. Ensures the tables actually exist in the database catalog.
     """
     inspector = inspect(engine)
-    existing_tables = inspector.get_table_names()
+    existing_tables = set(inspector.get_table_names())
 
     assert Subject.__tablename__ in existing_tables
     assert Attribute.__tablename__ in existing_tables
@@ -62,6 +64,8 @@ def test_create_tables(engine):
     assert Course_Restriction.__tablename__ in existing_tables
     assert Course_Offering.__tablename__ in existing_tables
     assert Course_Faculty.__tablename__ in existing_tables
+    assert Prerequisite_Nesting.__tablename__ in existing_tables
+    assert Prerequisite_Course.__tablename__ in existing_tables
 
 
 def test_insert_and_query(engine):
