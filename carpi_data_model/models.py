@@ -241,7 +241,7 @@ class Prerequisite_Course(Base):
     og_code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
     parent_id: Mapped[int] = mapped_column(SMALLINT, primary_key=True)
     new_subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
-    new_code_num: Mapped[int] = mapped_column(VARCHAR(4), primary_key=True)
+    new_code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
 
     __table_args__ = (
         ForeignKeyConstraint(
