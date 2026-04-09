@@ -25,16 +25,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-
-          # Remove the remote git dependency from requirements so CI doesn't 
-          # clone and test the remote 'main' branch over your local commit!
-          sed -i '/git+https:\/\/github\.com\/Project-CARPI\/database-schema\.git/d' requirements.txt
-
-          # Install all other dependencies
           pip install -r requirements.txt
-
-          # Install the currently checked-out version of the project
-          pip install -e .
 
       - name: Run Test Suite
         # GitHub's Ubuntu runners come with Docker pre-installed so the testcontainers

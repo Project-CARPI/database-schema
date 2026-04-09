@@ -1,5 +1,11 @@
-# Self-dependency that allows us to import data models for testing
--e git+https://github.com/Project-CARPI/database-schema.git#egg=carpi_data_model
+# Self-dependency that allows PyTest to import the package being tested.
+# 
+# As an "editable" dependency, Python will automatically track changes to the source code
+# without needing to reinstall the package after every change, which is ideal for
+# development environments.
+-e .
+
+# Other third-party dependencies
 certifi==2026.2.25
 charset-normalizer==3.4.7
 docker==7.1.0
