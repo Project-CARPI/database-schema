@@ -212,11 +212,11 @@ class Prerequisite_Nesting(Base):
     og_subj_code: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
     og_code_num: Mapped[str] = mapped_column(VARCHAR(4), primary_key=True)
     id: Mapped[int] = mapped_column(SMALLINT, primary_key=True)
-    relationship: Mapped[PrerequisiteNestingTypeEnum] = mapped_column(
+    relationship: Mapped[PrerequisiteNestingTypeEnum | None] = mapped_column(
         PREREQUISITE_NESTING_TYPE_ENUM,
         nullable=True,
     )
-    parent_id: Mapped[int] = mapped_column(SMALLINT, nullable=True)
+    parent_id: Mapped[int | None] = mapped_column(SMALLINT, nullable=True)
 
     __table_args__ = (
         ForeignKeyConstraint(
